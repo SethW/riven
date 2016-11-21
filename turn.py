@@ -60,7 +60,8 @@ class Turn(object):
 	def take_action(self):
 		print "%s's Heath: %s - %s's Actions: %s" % (self.active_character.character_name, self.active_character.health, self.active_character.character_name, self.action_count)
 		action_string = self.filter_input(raw_input("What will %s do? " % self.active_character.character_name))
-		
+		if action_string == False:
+			return False
 		action = self.active_character.find_action(action_string)
 		if action != False:
 			if action["status"] == "active":
@@ -109,6 +110,8 @@ class Turn(object):
 						
 					if len(targets) >= 1:
 						confirm_action = self.filter_input(raw_input("Confirm %s targeting %s with %s%s " % (self.active_character.character_name, target_names, action["name"], range_label)))
+						if confirm_action == False:
+							return False
 						if confirm_action.find("yes") >= 0 or confirm_action.find("confirm") >= 0 or confirm_action.find("yeah") >= 0 or confirm_action.find("yup") >= 0:
 							self.active_character.attack(action, targets, {"range": range_distance})
 							self.action_count = self.action_count - action["actions"]
@@ -143,6 +146,10 @@ class Turn(object):
 	
 	def finish(self):
 		print "Deactivating %s" %self.active_character.character_name
+		self.step = "activate"
+		self.action = False
+		self.active_character = False
+		self.action_count = 0
 	
 	
 	def filter_input(self, input):
@@ -151,7 +158,7 @@ class Turn(object):
 		elif input.find("end turn") >= 0 or input.find("finish turn") >= 0 :
 			confirm = self.filter_input(raw_input("Confirm ending %s's turn? " % self.active_character.character_name))
 			if confirm.find("yes") >= 0 or confirm.find("confirm") >= 0 or confirm.find("yeah") >= 0 or confirm.find("yup") >= 0:
-				self.finish()
+				return False
 			else:
 				self.step_again()
 

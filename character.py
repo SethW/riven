@@ -53,7 +53,10 @@ class Character(object):
 			
 		return False
 	def defend(self, attack, modifiers):
-		if randint(0,100) >= (int(self.dodge) - int(modifiers["accuracy"])):
+		dodge_factor = (int(self.dodge) - int(modifiers["accuracy"]))
+		if dodge_factor < 0:
+			dodge_factor = 0
+		if randint(0,100) >= dodge_factor:
 			print "Hit"
 			attack = attack - int(self.armor)
 			if len(modifiers["effects"]) >= 1:
@@ -77,31 +80,33 @@ class Character(object):
 		return result
 	def attack(self, attack, targets, modifiers):
 		for target in targets:
-			
-			attack_power = 0
-			for dice in attack["damage"]:
-				sides = dice.split(',')
-				for roll in range(0, attack["damage"][dice]):
-					rand = randint(1,len(sides)) - 1
-					side = int( sides[ rand ] )
-					attack_power = attack_power + side
-			print "Attack Power: %s" % attack_power
-			extras = {
-				"accuracy": attack["accuracy"],
-				"effects": attack["effects"],
-				"type": attack["type"],
-				"range": modifiers["range"],
-			}
-			result = target.defend(attack_power, extras)
-			print "%s's health: %s" %(target.character_name, target.health)
-			if result == "killed":
-				self.kill_count = self.kill_count + 1
-				self.hit_count = self.hit_count + 1
-			elif result == "hit" or result == "absorbed":
-				self.hit_count = self.hit_count + 1
+			if "heal" in attack["type"]:
+				heal_power = 0
 			else:
-				self.miss_count = self.miss_count + 1
-			self.check_conditions()
+				attack_power = 0
+				for dice in attack["power"]:
+					sides = dice.split(',')
+					for roll in range(0, attack["power"][dice]):
+						rand = randint(1,len(sides)) - 1
+						side = int( sides[ rand ] )
+						attack_power = attack_power + side
+				print "Attack Power: %s" % attack_power
+				extras = {
+					"accuracy": attack["accuracy"],
+					"effects": attack["effects"],
+					"type": attack["type"],
+					"range": modifiers["range"],
+				}
+				result = target.defend(attack_power, extras)
+				print "%s's health: %s" %(target.character_name, target.health)
+				if result == "killed":
+					self.kill_count = self.kill_count + 1
+					self.hit_count = self.hit_count + 1
+				elif result == "hit" or result == "absorbed":
+					self.hit_count = self.hit_count + 1
+				else:
+					self.miss_count = self.miss_count + 1
+				self.check_conditions()
 	
 	def set_effect(self, effect):
 		self.check_conditions()
@@ -143,7 +148,7 @@ class Character(object):
 								
 								# Loop through each property
 								for attack_properties in condition["results"][r][a]:
-									if attack_properties == "damage":
+									if attack_properties == "power":
 										
 										# Loop through all damages
 										for d in condition["results"][r][a][attack_properties]:

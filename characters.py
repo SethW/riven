@@ -15,7 +15,7 @@ characters = {
 				"range": 0,
 				"status": "active",
 				"actions": 1,
-				"damage": {
+				"power": {
 					"1,2,3,4,5,6": 2,
 					"1": 1
 				},
@@ -32,11 +32,12 @@ characters = {
 				"range": 0,
 				"status": "active",
 				"actions": 2,
-				"damage": {
-					"1,2,3": -3
+				"power": {
+					"1,2,3": 3
 				},
 				"area": 0,
 				"effects": [],
+				"accuracy": 90,
 				"type": ["friendly", "heal"]
 			}
 		},
@@ -51,7 +52,7 @@ characters = {
 					"move": 5,
 					"attacks": {
 						"fire-sword": {
-							"damage": {
+							"power": {
 								"1,2,3,4,5,6": 1
 							}
 						}
@@ -76,7 +77,7 @@ characters = {
 				"range": 3,
 				"actions": 2,
 				"status": "active",
-				"damage": {
+				"power": {
 					"0,0,0,1,2,3": 2,
 				},
 				"area": 1,
@@ -98,7 +99,7 @@ characters = {
 					"move": 5,
 					"attacks": {
 						"dive-bomb": {
-							"damage": {
+							"power": {
 								"0,0,0,1,2,3": 2
 							},
 							"accuracy": -10,
