@@ -7,3 +7,4 @@ class Player(object):
 		for c in self.characters:
 			if c.character_name == character_name:
 				return c
+		return False

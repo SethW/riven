@@ -14,7 +14,7 @@ characters = {
 				"name": "Fire Sword",
 				"range": 0,
 				"status": "active",
-				"action": 1,
+				"actions": 1,
 				"damage": {
 					"1,2,3,4,5,6": 2,
 					"1": 1
@@ -31,7 +31,7 @@ characters = {
 				"name": "Healing Warmth",
 				"range": 0,
 				"status": "active",
-				"action": 2,
+				"actions": 2,
 				"damage": {
 					"1,2,3": -3
 				},

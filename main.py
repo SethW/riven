@@ -6,7 +6,8 @@ from game import Game
 from player import Player
 from character import Character
 from pprint import pprint
-
+from turn import Turn
+import sys
 
 if False:
 	players_count = int(raw_input("How many players are there? "))
@@ -41,47 +42,73 @@ players = [
 	]),
 ]
 	
+
+global current_game
 current_game = Game(players)
+
+def searchStringForCharacters(string):
+	result = []
+	for c in current_game.all_characters():
+		if string.find(c.character_name) >= 0:
+			result.append(c)
+			string.replace(c.character_name, " ")
+	return result
+
+def searchStringForAction(string, character):
+	for a in character.attacks:
+		if string.find(character.attacks[a]["name"]) >= 0:
+			return character.attacks[a]
+	for a in character.abilities:
+		if string.find(character.abilities[a]["name"]) >= 0:
+			return character.abilities[a]
+	return False
 
 while current_game.is_active:
 	
 	print "Ready for action"
-	active_player = current_game.find_player(int(raw_input("Which player will activate? ")))
-	active_character_name = raw_input("Which character will activate? ")
 	
-	active_character = active_player.find_character(active_character_name)
+	#active_player = current_game.find_player(int(raw_input("Which player will activate? ")))
+	#active_character_name = raw_input("Which character will activate? ")
 	
 	
-	print "%s's health is %s" %(active_character_name, active_character.health)
-	print "Attacks"
-	pprint(active_character.attacks)
-	for attack in active_character.attacks:
-		print active_character.attacks[attack]["name"]
-		pprint(active_character.attacks[attack])
-	print ""
+	#active_character_name = raw_input("Which character will activate? ")
+	#active_character = current_game.find_character(active_character_name)
 	
-	print "Abilities"
-	for ability in active_character.abilities:
-		print active_character.abilities[ability]["name"]
-		pprint(active_character.abilities[ability])
-	print ""
-	action = raw_input ("What action should %s take? " % active_character_name)
-	valid_action = active_character.is_valid_action(action)
-	if valid_action:
-		target_player_id = int(raw_input("Which player is the target? "))
-		target_player = current_game.find_player(target_player_id)
-		target_character_name = raw_input("Which character of Player %s is the target of %s's %s? " % (target_player_id, active_character_name, action))
-		target_character = target_player.find_character(target_character_name)
-		target_range = raw_input("How far away is %s from %s? " % (target_character_name, active_character_name))
-		active_character.attack(valid_action, [target_character], {"range": target_range} )
+	new_turn = Turn(current_game)
+	
+	
+	
+	
+	
+	#print "%s's health is %s" %(active_character_name, active_character.health)
+	#print "Attacks"
+	#pprint(active_character.attacks)
+	#for attack in active_character.attacks:
+	#	print active_character.attacks[attack]["name"]
+	#	pprint(active_character.attacks[attack])
+	#print ""
+	
+	#print "Abilities"
+	#for ability in active_character.abilities:
+	#	print active_character.abilities[ability]["name"]
+	#	pprint(active_character.abilities[ability])
+	#print ""
+	#action = raw_input ("What action should %s take? " % active_character_name)
+	#valid_action = active_character.is_valid_action(action)
+	#if valid_action:
 		
-	else:
-		print "Invalid action: %s" % action
+		#target_player_id = int(raw_input("Which player is the target? "))
+		#target_player = current_game.find_player(target_player_id)
+	#	target_character_name = raw_input("Which character is the target of %s's %s? " % (active_character_name, action))
+	#	target_character = current_game.find_character(target_character_name)
+	#	target_range = raw_input("How far away is %s from %s? " % (target_character_name, active_character_name))
+	#	active_character.attack(valid_action, [target_character], {"range": target_range} )
+		
+	#else:
+	#	print "Invalid action: %s" % action
 	
 	
 
-#thing = Character()
-#print thing.health
 
 #engine = pyttsx.init()
 #engine.say('The quick brown fox jumped over the lazy dog.', 'fox')
@@ -89,24 +116,3 @@ while current_game.is_active:
 ## engine.iterate() must be called inside externalLoop()
 #externalLoop()
 #engine.endLoop()
-
-
-
-#class character(object):
-#	def __init__(self):
-#		self.health = 100
-#	def defend(self, attack, modifiers):
-#		
-#	def attack(self, attack_type, targets, modifiers):
-#		
-#	def change_health(self, source):
-#		
-#	def die(attack):
-#		
-#	def conditions(event, modifiers):
-#		
-#	def get_stats():
-#		
-#
-
-

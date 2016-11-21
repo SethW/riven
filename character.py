@@ -11,8 +11,8 @@ class Character(object):
 		self.kill_count = 0
 		self.hit_count = 0
 		self.miss_count = 0
-		
 		self.dodge_count = 0
+		self.activate_count = 0
 		
 		self.health = stats["max-health"]
 		self.max_health = stats["max-health"]
@@ -32,6 +32,15 @@ class Character(object):
 		self.effects = []
 		
 		
+	def find_action(self, action_string):
+		for a in self.attacks:
+			if action_string.find(self.attacks[a]["name"]) >= 0:
+				return self.attacks[a]
+		
+		for a in self.abilities:
+			if action_string.find(self.abilities[a]["name"]) >= 0:
+				return self.abilities[a]
+		return False
 		
 	def is_valid_action(self, action_name):
 		for a in self.attacks:
