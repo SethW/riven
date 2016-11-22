@@ -46,6 +46,8 @@ class Turn(object):
 			if character.health > 0:
 				for effect in character.effects:
 					effect.run_activate()
+					if effect.activate_count >= effect.activate_target:
+						character.unset_effect(effect.id)
 				self.active_character = character
 				self.action_count = character.actions
 				print "Activating %s" % (character.character_name)
@@ -135,19 +137,27 @@ class Turn(object):
 				print "$s is not active" % action["name"]
 				self.step_again()
 			
-			#action = active_character.is_valid_action(action_name)
-			#if action:
-			#	self.action = action
-			#	self.step_forward()
-			#else:
-			#	self.step_again()
 		else:
-			print "Action not valid"
-			self.step_again()
+			effect = self.active_character.find_effect(action_string)
+			if effect != False and (action_string.find("remove") or action_string.find("cancel")):
+				if effect.cost <= self.action_count:
+					self.active_character.unset_effect(effect.id)
+					self.action_count = self.action_count - effect.cost
+					if self.action_count > 0:
+						self.step_again()
+					else:
+						self.step_forward()
+				else:
+					print "Not enough actions left to remove %s" % effect.name
+			else:
+				print "Action not valid"
+				self.step_again()
 	
 	
 	def finish(self):
 		print "Deactivating %s" %self.active_character.character_name
+		for effect in character.effects:
+			effect.run_finish()
 		self.step = "activate"
 		self.action = False
 		self.active_character = False
@@ -157,7 +167,7 @@ class Turn(object):
 	def filter_input(self, input):
 		if input.find("abort") >= 0 or input.find("cancel") >= 0:
 			self.step_back()
-		elif input.find("end turn") >= 0 or input.find("finish turn") >= 0 :
+		elif self.active_character and (input.find("end turn") >= 0 or input.find("finish turn") >= 0 ):
 			confirm = self.filter_input(raw_input("Confirm ending %s's turn? " % self.active_character.character_name))
 			if confirm.find("yes") >= 0 or confirm.find("confirm") >= 0 or confirm.find("yeah") >= 0 or confirm.find("yup") >= 0:
 				return False

@@ -5,6 +5,7 @@ effects = [
 		"id": "fire",
 		"name": "Fire",
 		"cost": 2,
+		"activate_target": 3,
 		"set": {
 			
 		},
@@ -23,7 +24,7 @@ effects = [
 		"unset": {
 			
 		},
-	}
+	},
 ]
 
 class Effect(object):
@@ -31,12 +32,15 @@ class Effect(object):
 		self.data = effect
 		self.id = effect["id"]
 		self.name = effect["name"]
+		self.cost = effect["cost"]
 		self.set = effect["set"]
 		self.activate = effect["activate"]
 		self.action = effect["action"]
 		self.finish = effect["finish"]
 		self.unset = effect["unset"]
 		self.character = character
+		self.activate_count = 0;
+		self.activate_target = effect["activate_target"]
 		
 		self.run_set()
 	
@@ -58,6 +62,7 @@ class Effect(object):
 				character_stat = getattr(self.character, stat) + self.activate[stat]["value"]
 			setattr(self.character, stat, character_stat)
 			
+		self.activate_count = self.activate_count + 1
 		self.character.check_conditions()
 	
 	def run_finish(self):

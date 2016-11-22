@@ -46,7 +46,13 @@ class Character(object):
 			if action_string.find(self.abilities[a]["name"]) >= 0:
 				return self.abilities[a]
 		return False
-		
+	
+	def find_effect(self, action_string):
+		for effect in self.effects:
+			if action_string.find(effect.name) >= 0:
+				return effect
+		return False
+	
 	def is_valid_action(self, action_name):
 		for a in self.attacks:
 			if self.attacks[a]["name"] == action_name and self.attacks[a]["status"] == "active":
@@ -155,8 +161,11 @@ class Character(object):
 	def unset_effect(self, effect_id):
 		effect_list = []
 		for effect in self.effects:
-			if effect["id"] != effect_id:
+			if effect.id != effect_id:
+				effect.run_unset()
 				self.effects.append(effect)
+			else:
+				print "%s has been removed" % effect.name
 		self.effects = effect_list
 		self.check_conditions()
 	
@@ -165,6 +174,7 @@ class Character(object):
 			if effect["id"] == effect_id:
 				new_effect = Effect(effect, self)
 				self.effects.append(new_effect)
+				print "%s received %s" % (self.character_name, new_effect.name)
 		self.check_conditions()
 	
 	
