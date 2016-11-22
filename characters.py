@@ -45,7 +45,8 @@ characters = {
 		"armor": 2,
 		"conditions": [
 			{
-				"type": "health",
+				"type": "stat",
+				"key": "health",
 				"compare": "<=",
 				"value": 80,
 				"results": {
@@ -78,7 +79,7 @@ characters = {
 				"actions": 2,
 				"status": "active",
 				"power": {
-					"0,0,0,1,2,3": 2,
+					"0,2,3,4,5,6": 2,
 				},
 				"area": 1,
 				"accuracy": 0,
@@ -92,7 +93,8 @@ characters = {
 		"abilities": {},
 		"conditions": [
 			{
-				"type": "health",
+				"type": "stat",
+				"key": "health",
 				"compare": "<=",
 				"value": 15,
 				"results": {

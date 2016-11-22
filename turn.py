@@ -44,6 +44,8 @@ class Turn(object):
 		character = self.current_game.find_character(character_name)
 		if character:
 			if character.health > 0:
+				for effect in character.effects:
+					effect.run_activate()
 				self.active_character = character
 				self.action_count = character.actions
 				print "Activating %s" % (character.character_name)
@@ -127,7 +129,7 @@ class Turn(object):
 						self.step_again()
 						
 				else:
-					print "Not enough actions left for $s" % action["name"]
+					print "Not enough actions left for %s" % action["name"]
 					self.step_again()
 			else:
 				print "$s is not active" % action["name"]
