@@ -171,7 +171,7 @@ class Character(object):
 	
 	def set_effect(self, effect_id):
 		for effect in effects:
-			if effect["id"] == effect_id:
+			if effect["id"] == effect_id and effect_id not in self.immune:
 				new_effect = Effect(effect, self)
 				self.effects.append(new_effect)
 				print "%s received %s" % (self.character_name, new_effect.name)
@@ -226,6 +226,42 @@ class Character(object):
 								
 					else:
 						setattr(self, r, condition["results"][r])
-
+	
+	def show_stats(self, mode):
+		print "%s Stats:" %self.character_name
+		
+		print "		Health: %s" %self.health
+		print "		Actions: %s" %self.actions
+		print "		Move: %s" %self.move
+		print "		Dodge: %s" %self.dodge
+		print "		Armor: %s" %self.armor
+		
+		print ""
+		
+		if mode == "advanced":
+			print "		Turns: %s" %self.activate_count
+			print "		Kills: %s" %self.kill_count
+			print "		Hits: %s" %self.hit_count
+			print "		Miss: %s" %self.miss_count
+			print "		Dodges: %s" %self.dodge_count
+			
+		print ""
+		
+		print "Attacks"
+		pprint(self.attacks)
+		
+		print ""
+		print "Abilities"
+		pprint(self.abilities)
+		
+		print ""
+		print "Effects"
+		pprint(self.effects)
+		
+		print ""
+		print "Immunities"
+		pprint(self.immune)
+		
+		
 
 #	def get_stats():

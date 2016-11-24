@@ -177,6 +177,11 @@ class Turn(object):
 		elif input.find("end game") >= 0 or input.find("quit game") >= 0 :
 			if self.current_game.end_game() == False:
 				self.step_again()
+		elif input.find("stats") >= 0:
+			character = self.current_game.find_character(input)
+			if character:
+				character.show_stats("basic")
+			
 		else:
 			return input
 			
