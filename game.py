@@ -1,12 +1,29 @@
 #!/usr/bin/env python
 from pprint import pprint
 import sys
+from player import Player
+from characters import characters
+from character import Character
 
-class Game(object):
-	def __init__(self, players):
-		self.players = players
-		self.is_active = True
-		self.turn_count = 0
+from kivy.uix.widget import Widget
+from kivy.uix.label import Label
+from kivy.properties import NumericProperty, ReferenceListProperty, ObjectProperty, ListProperty, StringProperty, BooleanProperty, DictProperty
+
+class Game(Widget):
+	def __init__(self):
+		players = ListProperty([
+			Player(1, [
+				Character(1, 1, "Phara", characters[1]),
+			]),
+			Player(2, [
+				Character(1, 2, "Op", characters[2]),
+			]),
+		])
+		StringProperty("Setting up game...")
+		#self.add_widget(Label(text="Setting up Game.."))
+		#self.players = players
+		self.is_active = BooleanProperty(True)
+		self.turn_count = NumericProperty(0)
 	def end(self):
 		self.is_active = False
 		print "Thanks for playing"

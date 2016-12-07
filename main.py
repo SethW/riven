@@ -5,6 +5,13 @@ kivy.require('1.0.6') # replace with your current kivy version !
 
 from kivy.app import App
 from kivy.uix.label import Label
+from kivy.uix.widget import Widget
+from kivy.properties import NumericProperty, ReferenceListProperty, ObjectProperty, ListProperty, StringProperty, BooleanProperty, DictProperty
+from kivy.uix.gridlayout import GridLayout
+from kivy.uix.floatlayout import FloatLayout
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.textinput import TextInput
+
 
 #import pyttsx
 from characters import characters
@@ -43,25 +50,18 @@ class RivenApp(App):
 				players.append(Player(p, player_characters))
 		
 		
-		players = [
-			Player(1, [
-				Character(1, 1, "Phara", characters[1]),
-			]),
-			Player(2, [
-				Character(1, 2, "Op", characters[2]),
-			]),
-		]
+		
 			
 		
 		global current_game
-		current_game = Game(players)
+		current_game = Game()
 		
 		while current_game.is_active:
+			pass
+			#print "Ready for action"
 			
-			print "Ready for action"
 			
-			
-			new_turn = Turn(current_game)
+			#new_turn = Turn(current_game)
 			
 
 def searchStringForCharacters(string):
