@@ -1,6 +1,12 @@
 #!/usr/bin/env python
 
-import pyttsx
+import kivy
+kivy.require('1.0.6') # replace with your current kivy version !
+
+from kivy.app import App
+from kivy.uix.label import Label
+
+#import pyttsx
 from characters import characters
 from game import Game
 from player import Player
@@ -9,42 +15,54 @@ from pprint import pprint
 from turn import Turn
 import sys
 
-if False:
-	players_count = int(raw_input("How many players are there? "))
-	players = []
-	for p in range(1, players_count+1):
+
+class RivenApp(App):
+	def build(self):
 		
-		#player_characters_count = int(raw_input("How many characters does player %r have? " % p))
-		player_characters = []
-		#for c in range(1, player_characters_count+1):
-		c = 1
-		character_name = ""
+		if False:
+			players_count = int(raw_input("How many players are there? "))
+			players = []
+			for p in range(1, players_count+1):
+				
+				#player_characters_count = int(raw_input("How many characters does player %r have? " % p))
+				player_characters = []
+				#for c in range(1, player_characters_count+1):
+				c = 1
+				character_name = ""
+				
+				while character_name != "done":
+					character_name = raw_input("Enter name for Player %s's character #%s (or type 'done' if you are finished adding characters): " % (p, c))
+					
+					if character_name != "done":
+						character_id = raw_input("Enter character id for %s: " % character_name)
+						if character_id in characters:
+							new_character = Character(c, character_id, character_name, characters[character_id])
+							player_characters.append(new_character)
+							c = c + 1
+					
+				players.append(Player(p, player_characters))
 		
-		while character_name != "done":
-			character_name = raw_input("Enter name for Player %s's character #%s (or type 'done' if you are finished adding characters): " % (p, c))
+		
+		players = [
+			Player(1, [
+				Character(1, 1, "Phara", characters[1]),
+			]),
+			Player(2, [
+				Character(1, 2, "Op", characters[2]),
+			]),
+		]
 			
-			if character_name != "done":
-				character_id = raw_input("Enter character id for %s: " % character_name)
-				if character_id in characters:
-					new_character = Character(c, character_id, character_name, characters[character_id])
-					player_characters.append(new_character)
-					c = c + 1
+		
+		global current_game
+		current_game = Game(players)
+		
+		while current_game.is_active:
 			
-		players.append(Player(p, player_characters))
-
-
-players = [
-	Player(1, [
-		Character(1, 1, "Phara", characters[1]),
-	]),
-	Player(2, [
-		Character(1, 2, "Op", characters[2]),
-	]),
-]
-	
-
-global current_game
-current_game = Game(players)
+			print "Ready for action"
+			
+			
+			new_turn = Turn(current_game)
+			
 
 def searchStringForCharacters(string):
 	result = []
@@ -63,21 +81,9 @@ def searchStringForAction(string, character):
 			return character.abilities[a]
 	return False
 
-while current_game.is_active:
-	
-	print "Ready for action"
-	
-	#active_player = current_game.find_player(int(raw_input("Which player will activate? ")))
-	#active_character_name = raw_input("Which character will activate? ")
-	
-	
-	#active_character_name = raw_input("Which character will activate? ")
-	#active_character = current_game.find_character(active_character_name)
-	
-	new_turn = Turn(current_game)
-	
-	
-	
+
+if __name__ == '__main__':
+    RivenApp().run()
 	
 	
 	#print "%s's health is %s" %(active_character_name, active_character.health)
